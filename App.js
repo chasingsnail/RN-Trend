@@ -9,8 +9,10 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  Image
 } from 'react-native';
+import TabNavigator from 'react-native-tab-navigator';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
@@ -19,20 +21,50 @@ const instructions = Platform.select({
     'Shake or press menu button for dev menu',
 });
 
+const uri = 'http://facebook.github.io/react/img/logo_og.png';
+
 type Props = {};
 export default class App extends Component<Props> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedTab: 'popular'
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
+        <TabNavigator>
+          <TabNavigator.Item
+            selected={this.state.selectedTab === 'popular'}
+            title="home"
+            renderIcon={() => <Image style={styles.icon} source={require('./res/images/home.png')} />}
+            badgeText="1"
+            onPress={() => this.setState({ selectedTab: 'popular' })}>
+            <View style={styles.home}></View>
+          </TabNavigator.Item>
+          <TabNavigator.Item
+            selected={this.state.selectedTab === 'trend'}
+            title="trend"
+            renderIcon={() => <Image style={styles.icon} source={require('./res/images/trend.png')} />}
+            onPress={() => this.setState({ selectedTab: 'trend' })}>
+            <View style={styles.profile}></View>
+          </TabNavigator.Item>
+          <TabNavigator.Item
+            selected={this.state.selectedTab === 'favorite'}
+            title="favorite"
+            renderIcon={() => <Image style={styles.icon} source={require('./res/images/favorite.png')} />}
+            onPress={() => this.setState({ selectedTab: 'favorite' })}>
+            <View style={styles.home}></View>
+          </TabNavigator.Item>
+          <TabNavigator.Item
+            selected={this.state.selectedTab === 'my'}
+            title="my"
+            renderIcon={() => <Image style={styles.icon} source={require('./res/images/my.png')} />}
+            onPress={() => this.setState({ selectedTab: 'my' })}>
+            <View style={styles.profile}></View>
+          </TabNavigator.Item>
+        </TabNavigator>
       </View>
     );
   }
@@ -41,18 +73,18 @@ export default class App extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  home: {
+    flex: 1,
+    backgroundColor: 'red'
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  profile: {
+    flex: 1,
+    backgroundColor: 'yellow'
   },
+  icon: {
+    height: 22,
+    width: 22
+  }
 });
